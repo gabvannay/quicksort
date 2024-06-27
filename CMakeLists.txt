@@ -12,6 +12,7 @@ include_directories(include)
 set(SOURCES
     ./src/main.cpp
     ./src/FileSystem.cpp
+    ./src/Sort.cpp
 )
 
 # Source files to add

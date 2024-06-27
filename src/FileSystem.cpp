@@ -25,9 +25,8 @@ void FileSystem::readFiles(std::string path, bool recurse, bool allowHidden) {
       if (entry.is_directory()) {
         if (recurse) {
           readFiles(path.string(), true, allowHidden);
-        } else {
-          continue;
         }
+        continue;
       }
 
       files.push_back(path);
