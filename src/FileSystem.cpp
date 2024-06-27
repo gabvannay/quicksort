@@ -31,7 +31,8 @@ FileSystem::readFiles(std::string path, bool recurse, bool allowHidden) {
       files.push_back(path);
     }
   } catch (const std::filesystem::filesystem_error &error) {
-    std::cerr << "Unexpected error: " << std::endl << error.what() << std::endl;
+    std::cerr << "\033[1;31mUnexpected error: " << std::endl
+              << error.what() << "\033[0m" << std::endl;
   }
 
   return files;
