@@ -7,18 +7,14 @@
 #include <vector>
 
 namespace qs {
-class FileSystem {
-private:
-  /**
-   * A vector of filesystem's paths
-   */
-  std::vector<std::filesystem::path> files;
+using std::filesystem::path;
 
+class FileSystem {
 public:
-  std::vector<std::filesystem::path> getFiles();
-  void readFiles(std::string path, bool recurse, bool allowHidden);
+  static std::vector<path> readFiles(std::string path, bool recurse,
+                                     bool allowHidden);
   void moveFiles();
 };
 } // namespace qs
 
-#endif // !FILE_SYSTEM
+#endif // !FILE_SYSTEM_

@@ -7,15 +7,13 @@
 #include <vector>
 
 namespace qs {
-std::vector<std::filesystem::path> files;
-
-std::vector<std::filesystem::path> FileSystem::getFiles() { return files; }
-
-void FileSystem::readFiles(std::string path, bool recurse, bool allowHidden) {
-  std::filesystem::path dir = path;
+std::vector<std::filesystem::path>
+FileSystem::readFiles(std::string path, bool recurse, bool allowHidden) {
+  std::filesystem::path directory = path;
+  std::vector<std::filesystem::path> files;
 
   try {
-    for (const auto &entry : std::filesystem::directory_iterator(dir)) {
+    for (const auto &entry : std::filesystem::directory_iterator(directory)) {
       const std::filesystem::path path = entry.path();
 
       if (!allowHidden && path.filename().string()[0] == '.') {
@@ -24,7 +22,8 @@ void FileSystem::readFiles(std::string path, bool recurse, bool allowHidden) {
 
       if (entry.is_directory()) {
         if (recurse) {
-          readFiles(path.string(), true, allowHidden);
+          auto dirFiles = readFiles(path.string(), true, allowHidden);
+          files.insert(files.end(), dirFiles.begin(), dirFiles.end());
         }
         continue;
       }
@@ -34,6 +33,8 @@ void FileSystem::readFiles(std::string path, bool recurse, bool allowHidden) {
   } catch (const std::filesystem::filesystem_error &error) {
     std::cerr << "Unexpected error: " << std::endl << error.what() << std::endl;
   }
+
+  return files;
 }
 void FileSystem::moveFiles() {}
 }; // namespace qs
