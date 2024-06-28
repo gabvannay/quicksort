@@ -46,6 +46,10 @@ std::vector<path> FileSystem::readFiles(path dir, bool recurse,
 void FileSystem::moveFiles(std::map<std::string, std::vector<path>> files,
                            path dest) {
 
+  if (!std::filesystem::exists(dest)) {
+    throw std::invalid_argument("The provided destination does not exists.");
+  }
+
   path wd; // Working Directory
   path to;
 
