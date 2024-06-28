@@ -4,18 +4,23 @@
 #include <filesystem>
 #include <iostream>
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
 namespace qs {
-std::vector<std::filesystem::path>
-FileSystem::readFiles(std::string path, bool recurse, bool allowHidden) {
-  std::filesystem::path directory = path;
-  std::vector<std::filesystem::path> files;
+using std::filesystem::path;
+
+std::vector<path> FileSystem::readFiles(path dir, bool recurse,
+                                        bool allowHidden) {
+  if (!std::filesystem::exists(dir)) {
+    throw std::invalid_argument("The provided directory does not exist.");
+  }
+  std::vector<path> files;
 
   try {
-    for (const auto &entry : std::filesystem::directory_iterator(directory)) {
-      const std::filesystem::path path = entry.path();
+    for (const auto &entry : std::filesystem::directory_iterator(dir)) {
+      const path path = entry.path();
 
       if (!allowHidden && path.filename().string()[0] == '.') {
         continue;
@@ -38,22 +43,22 @@ FileSystem::readFiles(std::string path, bool recurse, bool allowHidden) {
 
   return files;
 }
-void FileSystem::moveFiles(
-    std::map<std::string, std::vector<std::filesystem::path>> files,
-    std::string dest) {
+void FileSystem::moveFiles(std::map<std::string, std::vector<path>> files,
+                           path dest) {
 
-  const std::filesystem::path dir = dest;
-  std::filesystem::path wd; // Working Directory
-  std::filesystem::path to;
+  path wd; // Working Directory
+  path to;
 
   try {
-    std::filesystem::create_directory(dir);
+    std::filesystem::create_directory(dest);
   } catch (const std::filesystem::filesystem_error &error) {
     std::cerr << "\033[1;31mUnexpected error: " << std::endl
               << error.what() << "\033[0m" << std::endl;
+    return;
   }
+
   for (const auto &pair : files) {
-    wd = dir;
+    wd = dest;
     wd.append(pair.first);
 
     std::filesystem::create_directory(wd);

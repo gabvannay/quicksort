@@ -12,11 +12,9 @@ using std::filesystem::path;
 
 class FileSystem {
 public:
-  static std::vector<path> readFiles(std::string path, bool recurse,
-                                     bool allowHidden);
-  static void
-  moveFiles(std::map<std::string, std::vector<std::filesystem::path>> files,
-            std::string dest);
+  static std::vector<path> readFiles(path dir, bool recurse, bool allowHidden);
+  static void moveFiles(std::map<std::string, std::vector<path>> files,
+                        path dest);
 };
 } // namespace qs
 
