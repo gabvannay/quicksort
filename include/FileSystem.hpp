@@ -3,6 +3,7 @@
 #define FILE_SYSTEM_
 
 #include <filesystem>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -13,7 +14,9 @@ class FileSystem {
 public:
   static std::vector<path> readFiles(std::string path, bool recurse,
                                      bool allowHidden);
-  void moveFiles();
+  static void
+  moveFiles(std::map<std::string, std::vector<std::filesystem::path>> files,
+            std::string dest);
 };
 } // namespace qs
 
