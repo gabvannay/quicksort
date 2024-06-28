@@ -11,9 +11,9 @@ std::map<std::string, std::vector<path>> Sort::sort(std::vector<path> files) {
 
   for (path file : files) {
     if (file.extension() == "") {
-      ext = ".txt";
+      ext = "txt";
     } else {
-      ext = file.extension().string();
+      ext = file.extension().string().substr(1);
     }
 
     // Try to emplace a new element at the key from the file extension
